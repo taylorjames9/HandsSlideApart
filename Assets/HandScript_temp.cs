@@ -10,7 +10,7 @@ public class HandScript_temp : MonoBehaviour {
 	private HandType hand; 
 
 	[SerializeField]
-	private float moveSpeed = 1.0f;
+	private float moveSpeed = 10.0f;
 	
 	// Update is called once per frame
 	void Update () {

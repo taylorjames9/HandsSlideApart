@@ -6,7 +6,9 @@ public class ExplodingObject : MonoBehaviour {
 	public bool Engaged{get{return engaged;}set{engaged = value;}}
 	public List<ExplodingPiece> ExplodingPiecesList;
 
-	public float ExplosionMultiplier = 4.0f;
+	public GameObject EndPointMarker;
+
+	public float ExplosionMultiplier = 100.0f;
 
 	public Transform CenterPiece;
 

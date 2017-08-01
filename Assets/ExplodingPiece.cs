@@ -14,7 +14,6 @@ public class ExplodingPiece : MonoBehaviour {
 
 	public Vector3 OppDirectionToCenter{get{return oppDirectionToCenter;}private set{oppDirectionToCenter = value;}}
 
-
 	private ExplodingObject myExplodingParent; 
 
 	// Use this for initialization
@@ -22,13 +21,18 @@ public class ExplodingPiece : MonoBehaviour {
 		myExplodingParent = transform.parent.GetComponent<ExplodingObject>();
 		CalculateStartPos();
 		CalculateDistanceToCenter();
-		CalculateEndPos();
 		FindDirectionToCenter();
+		Find_OPP_DirectionToCenter();
+		CalculateEndPos();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		//if hand manager hands is engaged
+		if(myExplodingParent.Engaged){
+			//mylocation is going to be ... 
+			transform.position = startPos + endPos*HandManager.Instance.PercentageOfTotalHandExpansion;
+		}
 	}
 
 	void CalculateStartPos(){
@@ -37,6 +41,7 @@ public class ExplodingPiece : MonoBehaviour {
 	void CalculateEndPos(){
 		//multiply the startPos by a constant amount, in the opposite direction as the center
 		endPos = StartPos + (oppDirectionToCenter * myExplodingParent.ExplosionMultiplier);
+		GameObject go = Instantiate(myExplodingParent.EndPointMarker, endPos, Quaternion.identity);
 	}
 	void CalculateDistanceToCenter(){
 		Vector3.Distance(transform.position, myExplodingParent.CenterPiece.position);
@@ -44,10 +49,10 @@ public class ExplodingPiece : MonoBehaviour {
 	void FindDirectionToCenter(){
 		//// Gets a vector that points from the player's position to the target's.
 		//var heading = target.position - player.position;
-		directionToCenter = transform.position - myExplodingParent.transform.position;
+		directionToCenter = myExplodingParent.CenterPiece.transform.position - transform.position;
 	}
 	void Find_OPP_DirectionToCenter(){
-		//// Gets a vector that points from the player's position to the target's.
+		///Gets a vector that points from the player's position to the target's.
 		//var heading = target.position - player.position;
 		oppDirectionToCenter = -1*directionToCenter;
 	}
