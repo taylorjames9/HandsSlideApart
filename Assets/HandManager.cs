@@ -17,6 +17,8 @@ public class HandManager : MonoBehaviour
     public float DistBtwnHands { get { return distBtwnHands; } private set { distBtwnHands = value; } }
     public float BaseDistBtwnHands { get { return baseDistBtwnHands; } private set { baseDistBtwnHands = value; } }
 
+    public float DistBetweenHandsNormalized{get{return distBetweenHandsNormalized;} private set{distBetweenHandsNormalized = value;}}
+
 	public float PercentageOfTotalHandExpansion{get{return percentageOfTotalHandExpansion;} private set{percentageOfTotalHandExpansion = value;}}
 
 	public float TotalDistanceForExpansion{get{return totalDistanceForExpansion;} private set{totalDistanceForExpansion = value;}}
@@ -43,8 +45,6 @@ public class HandManager : MonoBehaviour
 		//percentage of total expansion = current hand distance / totalDistance available ForExpansion 
 		//(length between fingers of two outstretched arms)
 		PercentHandExpansion();
-		
-
     }
 
     void LateUpdate()
@@ -54,10 +54,15 @@ public class HandManager : MonoBehaviour
 
 	float CheckDistanceBetweenHands(){
 
-		Debug.Log("Dist left to right : "+Vector3.Distance(HandLeft.transform.position, HandRight.transform.position));
+		//Debug.Log("Dist left to right : "+Vector3.Distance(HandLeft.transform.position, HandRight.transform.position));
 		distBtwnHands = Vector3.Distance(HandLeft.transform.position, HandRight.transform.position);
 		return distBtwnHands;
 	}
+
+    float DistanceBetweenHandsNormalized(){
+
+        return distBtwnHands - baseDistBtwnHands;
+    }
 
     void CheckBaseDistanceBetweenHands()
     {
@@ -74,9 +79,10 @@ public class HandManager : MonoBehaviour
 
 	float PercentHandExpansion(){
 		distBtwnHands = CheckDistanceBetweenHands();
+        distBetweenHandsNormalized = DistanceBetweenHandsNormalized();
 		//percentage of total expansion = current hand distance / totalDistanceForExpansion
-		percentageOfTotalHandExpansion = distBtwnHands/totalDistanceForExpansion;
-		Debug.Log("Percentage of hand Expansion "+percentageOfTotalHandExpansion);
+		percentageOfTotalHandExpansion = distBetweenHandsNormalized/totalDistanceForExpansion;
+		//Debug.Log("Percentage of hand Expansion "+percentageOfTotalHandExpansion);
 		return percentageOfTotalHandExpansion;
 	}
 
@@ -85,4 +91,5 @@ public class HandManager : MonoBehaviour
     private float baseDistBtwnHands;
 	private float totalDistanceForExpansion;
 	private float percentageOfTotalHandExpansion;
+    private float distBetweenHandsNormalized;
 }
